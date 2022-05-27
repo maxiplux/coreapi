@@ -27,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private UnauthorizedEntryPoint unauthorizedEntryPoint;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
@@ -42,23 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
 //.and().exceptionHandling()..accessDeniedHandler(accessDeniedHandler)
         http.authorizeRequests()
-
-
                 .antMatchers("/api/authentication/**").permitAll()//login and register pre-path
                 .antMatchers("/actuator/**").permitAll()//login and register pre-path
                 .antMatchers("/docs/**").permitAll()//login and register pre-path
                 .antMatchers("/api/v1/**").hasRole("ADMIN")
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-
-
-
-        ;
-
+                .anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint);
+        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

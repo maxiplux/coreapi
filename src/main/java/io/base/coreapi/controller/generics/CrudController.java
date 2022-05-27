@@ -5,6 +5,7 @@ import io.base.coreapi.errors.ValidationErrorBuilder;
 import io.base.coreapi.exceptions.ResourceNotFoundException;
 import io.base.coreapi.services.generics.cruds.CrudServices;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -56,7 +57,9 @@ public abstract class CrudController<T> {
             return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
         }
 
-        this.service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question not found with id " + id));
+        String title=StringUtils.capitalize(element.getClass().getName()).replace("Io.base.coreapi.model.","");
+
+        this.service.findById(id).orElseThrow(() -> new ResourceNotFoundException(title+" not found with id " + id));
 
 
         Optional<T> optionalProduct = this.service.UpdateById(id, element);
@@ -73,7 +76,9 @@ public abstract class CrudController<T> {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
         }
-        this.service.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question not found with id " + id));
+
+        String title=StringUtils.capitalize(elementForUpdate.getClass().getName()).replace("Io.base.coreapi.model","");
+        this.service.findById(id).orElseThrow(() -> new ResourceNotFoundException(title+" not found with id " + id));
 
         Optional<T> optionalProduct = service.UpdateById(id, elementForUpdate);
         if (optionalProduct.isPresent()) {

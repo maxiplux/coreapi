@@ -1,9 +1,9 @@
 package io.base.coreapi.services.generics.impl;
 
 
-import io.base.coreapi.model.Benefactor;
-import io.base.coreapi.repositories.BenefactorRepository;
-import io.base.coreapi.services.generics.BenefactorServices;
+import io.base.coreapi.model.Genero;
+import io.base.coreapi.repositories.GeneroRepository;
+import io.base.coreapi.services.generics.GeneroServices;
 import io.base.coreapi.services.generics.cruds.CrudServicesImpl;
 import io.base.coreapi.utils.Constans;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,10 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class BenefactorServicesImpl extends CrudServicesImpl<Benefactor> implements BenefactorServices<Benefactor> {
+public class GeneroServicesImpl extends CrudServicesImpl<Genero> implements GeneroServices<Genero> {
 
     @Autowired
-    private BenefactorRepository realRepository;
+    private GeneroRepository realRepository;
 
 
     @PostConstruct
@@ -27,25 +27,28 @@ public class BenefactorServicesImpl extends CrudServicesImpl<Benefactor> impleme
     }
 
 
-    public Optional<Benefactor> UpdateById(long id, Benefactor element) {
-        Optional<Benefactor> optionalCurrentCompany = this.repository.findById(id);
+    public Optional<Genero> UpdateById(long id, Genero element) {
+        Optional<Genero> optionalCurrentCompany = this.repository.findById(id);
+
         this.businessValidationsRules(Optional.of(element), optionalCurrentCompany, Optional.empty(), Constans.CrudOperations.UPDATE);
+
         if (optionalCurrentCompany.isPresent()) {
-            Benefactor currentProduct = optionalCurrentCompany.get();
+            Genero currentProduct = optionalCurrentCompany.get();
 
-            /*if (element.getNombre() != null) {
+            if (element.getNombre() != null) {
                 currentProduct.setNombre(element.getNombre());
-            }*/
+            }
 
 
-            return Optional.of((Benefactor) this.repository.save(currentProduct));
+            return Optional.of((Genero) this.repository.save(currentProduct));
         }
         return Optional.empty();
 
     }
 
+
     @Override
-    protected void businessValidationsRules(Optional<Benefactor> onDbElement, Optional<Benefactor> goalToUpdate, Optional<Long> id, Constans.CrudOperations crudOperations) {
+    protected void businessValidationsRules(Optional<Genero> onDbElement, Optional<Genero> goalToUpdate, Optional<Long> id, Constans.CrudOperations crudOperations) {
         log.info("START Validations");
         switch (crudOperations)
         {
@@ -58,5 +61,6 @@ public class BenefactorServicesImpl extends CrudServicesImpl<Benefactor> impleme
         }
         log.info("End Validations");
     }
+
 
 }

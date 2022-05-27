@@ -7,4 +7,18 @@ public class Constans {
         ROOT,
         ROLE_USER
     }
+
+    public enum CrudOperations {
+        UPDATE,
+        DELETE,
+        CREATE,
+
+
+
+
+    }
+
+    public static class ApiErrors {
+        public  static  String Error404="The URI requested is invalid or the resource requested, such as a user, does not exist.";
+    }
 }

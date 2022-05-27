@@ -67,6 +67,7 @@ public abstract class CrudAbstract  extends AbstractAuthTest {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
         HttpEntity<?> request = new HttpEntity<Object>(body, headers);
         ResponseEntity<PageSerializer> result = this.restTemplate.exchange(this.baseUrl, HttpMethod.GET, request, PageSerializer.class);
+        log.info("Status of request {}", result.getBody());
         AssertionErrors.assertEquals("Status code", HttpStatus.OK.value(), result.getStatusCode().value());
 
     }

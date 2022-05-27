@@ -5,6 +5,8 @@ import io.base.coreapi.model.Ocupacion;
 import io.base.coreapi.repositories.OcupacionRepository;
 import io.base.coreapi.services.generics.OcupacionServices;
 import io.base.coreapi.services.generics.cruds.CrudServicesImpl;
+import io.base.coreapi.utils.Constans;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class OcupacionServicesImpl extends CrudServicesImpl<Ocupacion> implements OcupacionServices<Ocupacion> {
 
     @Autowired
@@ -26,6 +29,9 @@ public class OcupacionServicesImpl extends CrudServicesImpl<Ocupacion> implement
 
     public Optional<Ocupacion> UpdateById(long id, Ocupacion element) {
         Optional<Ocupacion> optionalCurrentCompany = this.repository.findById(id);
+
+        this.businessValidationsRules(Optional.of(element), optionalCurrentCompany, Optional.empty(), Constans.CrudOperations.UPDATE);
+
         if (optionalCurrentCompany.isPresent()) {
             Ocupacion currentProduct = optionalCurrentCompany.get();
 
@@ -40,5 +46,20 @@ public class OcupacionServicesImpl extends CrudServicesImpl<Ocupacion> implement
 
     }
 
+
+    @Override
+    protected void businessValidationsRules(Optional<Ocupacion> onDbElement, Optional<Ocupacion> goalToUpdate, Optional<Long> id, Constans.CrudOperations crudOperations) {
+        log.info("START Validations");
+        switch (crudOperations)
+        {
+            case CREATE :
+                log.info("Create");
+            case DELETE:
+                log.info("DELETE");
+            case UPDATE:
+                log.info("DELETE");
+        }
+        log.info("End Validations");
+    }
 
 }

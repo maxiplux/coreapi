@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 
 @Data
@@ -15,10 +14,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @MappedSuperclass
 @EqualsAndHashCode(callSuper=false)
-public abstract class Catalog extends Auditable<String> {
-    @Column(unique = true)
-    @NotNull(message = "nombre cannot be null")
-    private String nombre;
+public abstract class Catalog extends Auditable<String> implements Serializable {
 
+    //https://stackoverflow.com/questions/1032486/what-is-the-proper-jpa-mapping-for-id-in-parent-and-unique-sequence-in-base-cla
+    private String nombre;
     private Boolean activo = true;
+
+
 }

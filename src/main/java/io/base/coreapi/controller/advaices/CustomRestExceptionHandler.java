@@ -1,6 +1,8 @@
 package io.base.coreapi.controller.advaices;
 
 import io.base.coreapi.errors.ApiError;
+import io.base.coreapi.exceptions.ResourceNotFoundException;
+import io.base.coreapi.utils.Constans;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
+//todo: complete all api codes
+//https://developer.twitter.com/en/support/twitter-api/error-troubleshooting
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 // 400
 
@@ -113,6 +117,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // 404
+
+    @ExceptionHandler({ ResourceNotFoundException.class })
+    public ResponseEntity<Object> handleAll(final ResourceNotFoundException ex, final WebRequest request) {
+        logger.info(ex.getClass().getName());
+        logger.error("error", ex);
+        //
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Constans.ApiErrors.Error404);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(final NoHandlerFoundException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {

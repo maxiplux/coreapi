@@ -29,8 +29,8 @@ public class Departamento extends Catalog implements Serializable {
     private Pais pais;
 
     public Departamento(String nombre, Boolean activo, Long id, Pais pais) {
-        super(nombre, activo);
-        this.id = id;
-        this.pais = pais;
+       super(nombre,activo);
+       this.id = id;
+       this.pais = pais;
     }
 }

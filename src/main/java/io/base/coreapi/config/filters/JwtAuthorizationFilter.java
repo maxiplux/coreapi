@@ -43,7 +43,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter
             if (authentication != null )
             {
                 log.info("Authentication Ok Principal{} - Authorities {}", authentication.getPrincipal().toString(),authentication.getAuthorities());
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             else {

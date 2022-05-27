@@ -31,8 +31,9 @@ public class Municipio extends Catalog implements Serializable {
     private Departamento departamento;
 
     public Municipio(String nombre, Boolean activo, Long id, Departamento departamento) {
-        super(nombre, activo);
+        super(nombre,activo);
         this.id = id;
+
         this.departamento = departamento;
     }
 }
