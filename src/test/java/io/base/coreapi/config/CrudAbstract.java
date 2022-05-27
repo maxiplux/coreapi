@@ -32,6 +32,7 @@ public abstract class CrudAbstract  extends AbstractAuthTest {
 
         JsonNode currentElement=element.getBody();
         String currentId=currentElement.get("id").asText();
+        AssertionErrors.assertNotNull("Status code updateElement",currentId);
         HttpEntity<?> request = new HttpEntity<Object>(bodyForUpdate, headers);
 
         ResponseEntity<JsonNode> result = this.restTemplate.exchange(this.baseUrl+currentId+"/", HttpMethod.PUT,  request, JsonNode.class);

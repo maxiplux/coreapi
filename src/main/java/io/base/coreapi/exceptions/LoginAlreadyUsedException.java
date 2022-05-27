@@ -3,7 +3,7 @@ package io.base.coreapi.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static io.base.coreapi.errors.ErrorConstants.*;
+import static io.base.coreapi.errors.ErrorConstants.LOGIN_ALREADY_USED_TYPE;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class LoginAlreadyUsedException extends RuntimeException {

@@ -1,6 +1,7 @@
 package io.base.coreapi.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +21,12 @@ public class FormaDePago extends Catalog implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
+    @Range(min = 1,max = 100)
     private Integer moraMaxima;
+
+
+    @Range(min = 1,max = 100)
     private Integer maximoDeRecordatorios;
 
 
