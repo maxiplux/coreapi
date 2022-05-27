@@ -18,6 +18,8 @@ public abstract class CrudAbstract  extends AbstractAuthTest {
     protected  Map<String, Object> bodyForCreate = new HashMap<>();
     protected  String baseUrl="";
 
+    //todo: test for bad request : 400
+    //todo: test for unique name exists  : 500
 
 
     @Test
