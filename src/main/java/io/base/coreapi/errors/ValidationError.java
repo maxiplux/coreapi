@@ -17,7 +17,7 @@ import java.util.Set;
 public class ValidationError {
 
     private  String errorMessage;
-    private Integer totalErrors=0;
+    private Integer totalErrors;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final Set<FieldError> errors = new HashSet<>();
 

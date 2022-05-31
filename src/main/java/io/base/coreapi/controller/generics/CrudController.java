@@ -19,6 +19,7 @@ import java.util.Optional;
 
 
 @Data
+@SuppressWarnings("unchecked")
 public abstract class CrudController<T> {
 
     protected CrudServices service;
