@@ -1,7 +1,7 @@
 package io.base.coreapi.controller.generics;
 
 
-import io.base.coreapi.model.Pais;
+import io.base.coreapi.model.TipoDocumento;
 import io.base.coreapi.services.generics.TipoDeDocumentoServices;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 
 @RestController
-@RequestMapping("/api/v1/tipo-de-documento")
+@RequestMapping("/api/v1/tipo-de-documento/")
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class TipoDeDocumentoController extends CrudController<Pais> {
+public class TipoDocumentoController extends CrudController<TipoDocumento> {
 
     @Autowired
     private TipoDeDocumentoServices realServices;

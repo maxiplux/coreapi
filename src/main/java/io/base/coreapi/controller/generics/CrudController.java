@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,10 +72,10 @@ public abstract class CrudController<T> {
 
 
     @PutMapping("{id}/")
-    public ResponseEntity<?> updateEmployee(@PathVariable("id") long id, @Valid @RequestBody T elementForUpdate, Errors errors) throws Throwable {
+    public ResponseEntity<?> updateEmployee(@PathVariable("id") long id, @Valid @RequestBody T elementForUpdate, BindingResult bindingResult, Errors errors) throws Throwable {
 
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
+            return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(bindingResult));
         }
 
         String title=StringUtils.capitalize(elementForUpdate.getClass().getName()).replace("Io.base.coreapi.model","");
@@ -89,7 +90,7 @@ public abstract class CrudController<T> {
 
 
     @PostMapping
-    public ResponseEntity<?> creatProduct(@Valid @RequestBody T element, Errors errors) {
+    public ResponseEntity<?> creatProduct(@Valid @RequestBody T element,BindingResult bindingResult, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
         }

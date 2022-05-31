@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Data
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "CONFIG_PAIS",uniqueConstraints = { @UniqueConstraint(name = "Unique_nombre",columnNames = { "nombre" }) })
 @EqualsAndHashCode(callSuper = false)
-@UniqueValidation(tableGoal = "CONFIG_PAIS", message = "Invalid name for Pais, this should be unique", columName = "nombre")
+@UniqueValidation(entityName = "Pais",tableGoal = "CONFIG_PAIS", message = "Invalid name for Pais, this should be unique", columName = "nombre")
 public class Pais extends Catalog implements Serializable {
     @Id
     @SequenceGenerator(name = "pais_seq", sequenceName = "pais_seq", allocationSize = 1)
@@ -34,5 +35,9 @@ public class Pais extends Catalog implements Serializable {
         super(nombre,activo);
         this.id = id;
 
+    }
+    @NotEmpty(message = "Check your name")
+    public  String getNombre(){
+        return  this.nombre;
     }
 }

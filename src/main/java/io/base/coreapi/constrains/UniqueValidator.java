@@ -19,6 +19,7 @@ public class UniqueValidator implements ConstraintValidator<UniqueValidation, Ob
 
     private  String tableGoal;
     private  String columName;
+    private  String entityName;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,6 +35,7 @@ public class UniqueValidator implements ConstraintValidator<UniqueValidation, Ob
     public void initialize(UniqueValidation constraintAnnotation) {
         this.tableGoal = constraintAnnotation.tableGoal();
         this.columName = constraintAnnotation.columName();
+        this.entityName=constraintAnnotation.entityName();
 
     }
 
@@ -42,8 +44,16 @@ public class UniqueValidator implements ConstraintValidator<UniqueValidation, Ob
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context){
 
+        if (this.notExistValue(value))
+        {
+            return  true;
+        }
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                .addNode(this.columName)
 
-        return this.notExistValue(value);
+                .addConstraintViolation();
+        return false;
     }
 
     private boolean notExistValue(Object goal) {

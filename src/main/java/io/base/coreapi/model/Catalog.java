@@ -17,8 +17,8 @@ import java.io.Serializable;
 public abstract class Catalog extends Auditable<String> implements Serializable {
 
     //https://stackoverflow.com/questions/1032486/what-is-the-proper-jpa-mapping-for-id-in-parent-and-unique-sequence-in-base-cla
-    private String nombre;
-    private Boolean activo = true;
+    protected String nombre;
+    protected Boolean activo = true;
 
 
 }
