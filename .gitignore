@@ -35,6 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+/templates/*.ftlh
 /templates/0b3039b7-9b46-41a8-ac74-4c06c8a09ffb.ftlh
 /templates/0cc8ba87-73eb-407d-b0c3-f8039713e624.ftlh
 /templates/0d4c652b-21e1-45dd-b692-774fc2f98dd2.ftlh
