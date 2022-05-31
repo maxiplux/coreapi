@@ -17,6 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,8 +27,19 @@ import java.util.Set;
 @Slf4j
 public   abstract  class AbstractAuthTest {
 
+    protected HttpHeaders headers = new HttpHeaders();
+
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    protected MockMvc mockMvc;
+
     @Autowired
     protected TestRestTemplate restTemplate;
+
+
+
+
 
     protected String authToken = "";
     private final String authUrl="/api/authentication/login/";
@@ -41,6 +55,7 @@ public   abstract  class AbstractAuthTest {
     public void setUp() throws Exception {
         this.dologin();
         this.extraSetupSteps();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
 
@@ -56,8 +71,8 @@ public   abstract  class AbstractAuthTest {
     private void dologin() {
         this.userRepository.deleteAll();
         this.authorityRepository.deleteAll();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json " );
+        HttpHeaders localHeaders = new HttpHeaders();
+        localHeaders.add("Content-Type", "application/json " );
         User user = new User();
         user.setCreateTime(LocalDateTime.now());
         user.setUsername("admin");
@@ -76,9 +91,14 @@ public   abstract  class AbstractAuthTest {
         login.setUsername("admin");
         login.setPassword("admin");
 
-        HttpEntity<?> request = new HttpEntity<UserDto>(login, headers);
+        HttpEntity<?> request = new HttpEntity<UserDto>(login, localHeaders);
         ResponseEntity<TokenDto> response = restTemplate.exchange(authUrl, HttpMethod.POST, request, TokenDto.class);
 
         this.authToken="Bearer "+response.getBody().getAccessToken();
+
+
+        headers.add("Authorization",  this.authToken);
+        headers.add("Content-Type",  "application/json");
+
     }
 }

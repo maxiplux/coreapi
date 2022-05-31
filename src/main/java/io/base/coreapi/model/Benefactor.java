@@ -17,10 +17,12 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "CORE_BENEFACTOR")
 @EqualsAndHashCode(callSuper = false)
+
 public class Benefactor extends Auditable<String> implements Serializable {
     @Id
-    @SequenceGenerator(name = "benefactor_seq", sequenceName = "benefactor_seq", allocationSize = 1)
 
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "benefactor_seq")
+    @SequenceGenerator(name = "benefactor_seq", sequenceName = "benefactor_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -68,7 +70,7 @@ public class Benefactor extends Auditable<String> implements Serializable {
     @NotNull(message = "Primer Apellido cannot be null")
     private String primerApellido;
     @NotNull(message = "Primer Apellido cannot be null")
-    private String segundoSegundo;
+    private String segundoApellido;
 
     @Email(message = "This field should be work using email a valid format")
     @NotNull(message = "Email cannot be null")

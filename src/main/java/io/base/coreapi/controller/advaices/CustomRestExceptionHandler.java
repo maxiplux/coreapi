@@ -4,6 +4,8 @@ import io.base.coreapi.errors.ApiError;
 import io.base.coreapi.exceptions.ResourceNotFoundException;
 import io.base.coreapi.utils.Constans;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -121,6 +123,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    @ExceptionHandler({ OptimisticLockingFailureException.class, DataIntegrityViolationException.class })
+    ResponseEntity<Object> handleConflict(Exception ex) {
+
+        final List<String> errors = new ArrayList<String>();
+        errors.add(ex.getLocalizedMessage());
+        logger.error("Fail in system {}", ex);
+        final ApiError apiError = new ApiError(HttpStatus.CONFLICT, Constans.ApiErrors.Error409, errors);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
@@ -130,7 +141,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(violation.getRootBeanClass().getName() + " " + violation.getPropertyPath() + ": " + violation.getMessage());
         }
 
-        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, Constans.ApiErrors.Error400, errors);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
@@ -138,8 +149,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ ResourceNotFoundException.class })
     public ResponseEntity<Object> handleAll(final ResourceNotFoundException ex, final WebRequest request) {
-        logger.info(ex.getClass().getName());
-        logger.error("error", ex);
+
         //
         final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), Constans.ApiErrors.Error404);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());

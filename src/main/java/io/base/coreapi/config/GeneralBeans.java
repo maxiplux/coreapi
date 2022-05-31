@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -15,6 +16,8 @@ import javax.sql.DataSource;
 
 @Configuration
 //@EnableAspectJAutoProxy
+@EnableJpaAuditing
+
 public class GeneralBeans {
     @Bean
     MeterRegistryCustomizer<MeterRegistry> configurer(

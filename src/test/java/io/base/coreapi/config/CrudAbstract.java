@@ -1,7 +1,9 @@
 package io.base.coreapi.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.base.coreapi.util.PageSerializer;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
@@ -22,18 +24,16 @@ public abstract class CrudAbstract  extends AbstractAuthTest {
     //todo: test for unique name exists  : 500
 
 
+
     @Test
     public void updateElement() {
         ResponseEntity<JsonNode> element=requestToCreateElement();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization",  this.authToken);
-        headers.add("Content-Type",  "application/json");
 
 
         JsonNode currentElement=element.getBody();
         String currentId=currentElement.get("id").asText();
         AssertionErrors.assertNotNull("Status code updateElement",currentId);
-        HttpEntity<?> request = new HttpEntity<Object>(bodyForUpdate, headers);
+        HttpEntity<?> request = new HttpEntity<Object>(bodyForUpdate, this.headers);
 
         ResponseEntity<JsonNode> result = this.restTemplate.exchange(this.baseUrl+currentId+"/", HttpMethod.PUT,  request, JsonNode.class);
         log.info("Status of element updateElement {}", result);
@@ -49,29 +49,53 @@ public abstract class CrudAbstract  extends AbstractAuthTest {
         AssertionErrors.assertEquals("Status code createElement ",200,element.getStatusCodeValue());
     }
 
+    @SneakyThrows
     public ResponseEntity<JsonNode>  requestToCreateElement()
     {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization",  this.authToken);
-        headers.add("Content-Type",  "application/json");
 
 
 
 
-        HttpEntity<?> request = new HttpEntity<Object>(bodyForCreate, headers);
+
+        HttpEntity<?> request = new HttpEntity<Object>(bodyForCreate, this.headers);
+
+        /*
+        MvcResult resultActions=this.mockMvc.perform( MockMvcRequestBuilders
+                        .post(this.baseUrl )
+                        .content(asJsonString(this.bodyForCreate))
+                        .headers(headers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn();
+        resultActions.getRequest()*/
+
         ResponseEntity<JsonNode> result = this.restTemplate.exchange(this.baseUrl, HttpMethod.POST,  request, JsonNode.class);
         return result;
     }
 
     @Test
     public void testGetElements() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization",  this.authToken);
+
+
         MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-        HttpEntity<?> request = new HttpEntity<Object>(body, headers);
+        HttpEntity<?> request = new HttpEntity<Object>(body, this.headers);
         ResponseEntity<PageSerializer> result = this.restTemplate.exchange(this.baseUrl, HttpMethod.GET, request, PageSerializer.class);
         log.info("Status of request {}", result.getBody());
         AssertionErrors.assertEquals("Status code", HttpStatus.OK.value(), result.getStatusCode().value());
 
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.findAndRegisterModules();
+
+            return objectMapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            log.error("asJsonString ->  Exception {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }
