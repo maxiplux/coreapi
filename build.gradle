@@ -132,6 +132,8 @@ tasks.test {
     maxParallelForks = Runtime.getRuntime().availableProcessors()
 }
 
+
+
 sonarqube {
     properties {
         property "sonar.projectKey", "maxiplux_coreapi"
