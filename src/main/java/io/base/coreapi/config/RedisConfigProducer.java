@@ -27,10 +27,11 @@ public class RedisConfigProducer {
 
     @Bean
     JedisConnectionFactory connectionFactory() {
-        log.info("Status Redis H:{} - P:{} - U:{} - PW:{}", this.redisHost, this.redisPort, this.redisUsername, this.redisPassword);
+        log.debug("Status Redis H:{} - P:{} - U:{} - PW:{}", this.redisHost, this.redisPort, this.redisUsername, this.redisPassword);
 
         JedisConnectionFactory factory = new JedisConnectionFactory();
         // todo: move to app properties
+        /*
         factory.setPort(this.redisPort);
         factory.setHostName(this.redisHost);
         if (!this.redisPassword.isEmpty())
@@ -38,6 +39,8 @@ public class RedisConfigProducer {
             factory.setPassword(this.redisPassword);
 
         }
+
+         */
         //factory.setUsePool(true);
         factory.getPoolConfig().setMaxIdle(30);
         factory.getPoolConfig().setMinIdle(30);
