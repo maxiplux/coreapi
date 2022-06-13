@@ -27,7 +27,7 @@ public class RedisConfigProducer {
 
     @Bean
     JedisConnectionFactory connectionFactory() {
-        log.debug("Status Redis H:{} - P:{} - U:{} - PW:{}", this.redisHost, this.redisPort, this.redisUsername, this.redisPassword);
+        //log.debug("Status Redis H:{} - P:{} - U:{} - PW:{}", this.redisHost, this.redisPort, this.redisUsername, this.redisPassword);
 
         JedisConnectionFactory factory = new JedisConnectionFactory();
         // todo: move to app properties
