@@ -31,7 +31,7 @@ public class RedisConfigProducer {
 
         JedisConnectionFactory factory = new JedisConnectionFactory();
         // todo: move to app properties
-        /*
+
         factory.setPort(this.redisPort);
         factory.setHostName(this.redisHost);
         if (!this.redisPassword.isEmpty())
@@ -39,8 +39,6 @@ public class RedisConfigProducer {
             factory.setPassword(this.redisPassword);
 
         }
-
-         */
         //factory.setUsePool(true);
         factory.getPoolConfig().setMaxIdle(30);
         factory.getPoolConfig().setMinIdle(30);
