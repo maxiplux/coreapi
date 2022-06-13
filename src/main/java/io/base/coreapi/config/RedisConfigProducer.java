@@ -38,7 +38,7 @@ public class RedisConfigProducer {
             factory.setPassword(this.redisPassword);
 
         }
-        factory.setUsePool(true);
+        //factory.setUsePool(true);
         factory.getPoolConfig().setMaxIdle(30);
         factory.getPoolConfig().setMinIdle(30);
         return factory;
