@@ -16,6 +16,9 @@ public class RedisConfigProducer {
     @Bean
     JedisConnectionFactory connectionFactory() {
         JedisConnectionFactory factory = new JedisConnectionFactory();
+        // todo: move to app properties
+        factory.getPoolConfig().setMaxIdle(30);
+        factory.getPoolConfig().setMinIdle(30);
         return factory;
     }
 
