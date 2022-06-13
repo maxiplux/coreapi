@@ -76,7 +76,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // https://mvnrepository.com/artifact/redis.clients/jedis
-    implementation 'redis.clients:jedis:2.8.0'
+    implementation 'redis.clients:jedis:3.8.0'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
@@ -100,7 +100,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-redis')
 
     // https://mvnrepository.com/artifact/redis.clients/jedis
-   implementation 'redis.clients:jedis:3.8.0'
+
 
 
     // https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus
