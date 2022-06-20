@@ -4,12 +4,17 @@ WORKDIR /home/gradle/src
 ADD newrelic /home/gradle/src
 RUN gradle build --exclude-task test  --no-daemon  --exclude-task test
 
-FROM openjdk:11-jre-slim
 
+FROM ubuntu:latest
+
+RUN apt update && apt install -y --no-install-recommends \
+    git \
+    wget \
+    openjdk-11-jdk \
+    gradle \
+    && rm -rf /var/lib/apt/lists/*
 EXPOSE 8080
-
 RUN mkdir /app
-
 
 ENV NEW_RELIC_APP_NAME="coreAPI"
 ENV NEW_RELIC_LICENSE_KEY="license_key"
@@ -18,7 +23,8 @@ ENV NEW_RELIC_LOG_FILE_NAME="STDOUT"
 
 
 COPY --from=build /home/gradle/src/build/libs/coreapi-0.0.1-SNAPSHOT.jar /app/spring-boot-application.jar
-COPY --from=build /home/gradle/src/newrelic/newrelic.jar  /app
+RUN wget https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar -P /app
+
 ENTRYPOINT ["java",  "-javaagent:/app/newrelic.jar  -Dnewrelic.config.app_name='My Application' -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY  -Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
 
 #docker build -t maxiplux/io.api.base .
