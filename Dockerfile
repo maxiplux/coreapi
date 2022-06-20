@@ -1,6 +1,7 @@
 FROM gradle:jdk11 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
+ADD newrelic /home/gradle/src
 RUN gradle build --exclude-task test  --no-daemon  --exclude-task test
 
 FROM openjdk:11-jre-slim
