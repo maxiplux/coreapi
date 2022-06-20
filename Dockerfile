@@ -14,10 +14,10 @@ ENV NEW_RELIC_APP_NAME="coreAPI"
 ENV NEW_RELIC_LICENSE_KEY="license_key"
 ENV NEW_RELIC_LOG_FILE_NAME="STDOUT"
 
-ADD newrelic/newrelic.jar  /app
+
 
 COPY --from=build /home/gradle/src/build/libs/coreapi-0.0.1-SNAPSHOT.jar /app/spring-boot-application.jar
-
+COPY newrelic/newrelic.jar  /app
 ENTRYPOINT ["java",  "-javaagent:/app/newrelic.jar  -Dnewrelic.config.app_name='My Application' -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY  -Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
 
 #docker build -t maxiplux/io.api.base .
