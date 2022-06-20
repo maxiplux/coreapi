@@ -19,18 +19,12 @@ RUN mkdir /app
 ENV NEW_RELIC_APP_NAME="coreAPI"
 ENV NEW_RELIC_LICENSE_KEY="license_key"
 ENV NEW_RELIC_LOG_FILE_NAME="STDOUT"
-
-
-
 COPY --from=build /home/gradle/src/build/libs/coreapi-0.0.1-SNAPSHOT.jar /app/spring-boot-application.jar
+WORKDIR /app
 RUN wget https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic.jar -P /app
-
 ENTRYPOINT ["java",  "-javaagent:/app/newrelic.jar  -Dnewrelic.config.app_name='My Application' -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY  -Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
-
 #docker build -t maxiplux/io.api.base .
-
-
-#docker tag  3501cab4af42 maxiplux/livemarket.business.b2bcart:1.0.5
+#docker tag  b302c8b2f2a1 maxiplux/livemarket.business.b2bcart:arm
 #docker tag  39d440f82330 maxiplux/livemarket.business.b2bcart:kuerbernetes
 #docker push maxiplux/livemarket.business.b2bcart:kuerbernetes
 #docker push maxiplux/io.api.base:1.0.0
