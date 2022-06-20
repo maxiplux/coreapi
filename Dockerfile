@@ -15,7 +15,7 @@ ENV NEW_RELIC_LICENSE_KEY="license_key"
 ENV NEW_RELIC_LOG_FILE_NAME="STDOUT"
 
 ADD newrelic/newrelic.jar  /app
-ADD newrelic/newrelic.yml  /app
+
 COPY --from=build /home/gradle/src/build/libs/coreapi-0.0.1-SNAPSHOT.jar /app/spring-boot-application.jar
 
 ENTRYPOINT ["java",  "-javaagent:/app/newrelic.jar  -Dnewrelic.config.app_name='My Application' -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY  -Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
